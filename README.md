@@ -10,7 +10,9 @@ PC to Arduino
 
 ![pc-arduino](./imgs/pc-arduino.gif)
 
-PC to Smartphone to Arduino
+PC to Smartphone to Arduino (Changed car)
+
+![setup](./imgs/setup.jpg)
 
 # Circuitry
 

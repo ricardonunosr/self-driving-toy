@@ -1,44 +1,62 @@
-#define MOTOR_FORWARD 5
-#define MOTOR_BACKWARD 6
-#define MOTOR_LEFT 10
-#define MOTOR_RIGHT 11
+#define MOTOR_LEFT_FORWARD 5
+#define MOTOR_LEFT_BACKWARD 6
+#define MOTOR_RIGHT_FORWARD 10
+#define MOTOR_RIGHT_BACKWARD 11
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
-  pinMode(MOTOR_FORWARD, OUTPUT);
-  pinMode(MOTOR_BACKWARD, OUTPUT);
-  pinMode(MOTOR_LEFT, OUTPUT);
-  pinMode(MOTOR_RIGHT, OUTPUT);
-  digitalWrite(MOTOR_FORWARD, LOW); // Start motor off
-  digitalWrite(MOTOR_BACKWARD, LOW);
-  digitalWrite(MOTOR_LEFT, LOW);
-  digitalWrite(MOTOR_RIGHT, LOW);
+  pinMode(MOTOR_LEFT_FORWARD, OUTPUT);
+  pinMode(MOTOR_LEFT_BACKWARD, OUTPUT);
+  pinMode(MOTOR_RIGHT_FORWARD, OUTPUT);
+  pinMode(MOTOR_RIGHT_BACKWARD, OUTPUT);
+  digitalWrite(MOTOR_LEFT_FORWARD, LOW); // Start motor off
+  digitalWrite(MOTOR_LEFT_BACKWARD, LOW);
+  digitalWrite(MOTOR_RIGHT_FORWARD, LOW);
+  digitalWrite(MOTOR_RIGHT_BACKWARD, LOW);
 }
 
-void loop() {
+void loop()
+{
   while (Serial.available()) // whatever the data that is coming in serially and
                              // assigning the value to the variable “data”
   {
     byte data = Serial.read();
     Serial.println(data);
-    if (data == '1') {
-      digitalWrite(MOTOR_BACKWARD, LOW);
-      digitalWrite(MOTOR_FORWARD, HIGH); // Turn on motor forward
-    } else if (data == '0') {
-      digitalWrite(MOTOR_FORWARD, LOW); // Turn off motor forward
-    } else if (data == '2') {
-      digitalWrite(MOTOR_FORWARD, LOW);
-      digitalWrite(MOTOR_BACKWARD, HIGH); // Turn on motor backward
-    } else if (data == '3') {
-      digitalWrite(MOTOR_BACKWARD, LOW); // Turn off motor backward
-    } else if (data == '4') {
-      digitalWrite(MOTOR_LEFT, HIGH); // Turn on motor left
-    } else if (data == '5') {
-      digitalWrite(MOTOR_LEFT, LOW); // Turn off motor left
-    } else if (data == '6') {
-      digitalWrite(MOTOR_RIGHT, HIGH); // Turn on motor right
-    } else if (data == '7') {
-      digitalWrite(MOTOR_RIGHT, LOW); // Turn off motor right
+    switch (data)
+    {
+    case '0': // FORWARD ON
+      digitalWrite(MOTOR_LEFT_FORWARD, HIGH);
+      digitalWrite(MOTOR_RIGHT_FORWARD, HIGH);
+      break;
+    case '1': // FORWARD OFF
+      digitalWrite(MOTOR_LEFT_FORWARD, LOW);
+      digitalWrite(MOTOR_RIGHT_FORWARD, LOW);
+      break;
+    case '2': // BACKWARD ON
+      digitalWrite(MOTOR_LEFT_BACKWARD, HIGH);
+      digitalWrite(MOTOR_RIGHT_BACKWARD, HIGH);
+      break;
+    case '3': // BACKWARD OFF
+      digitalWrite(MOTOR_LEFT_BACKWARD, LOW);
+      digitalWrite(MOTOR_RIGHT_BACKWARD, LOW);
+      break;
+    case '4': // LEFT ON
+      digitalWrite(MOTOR_LEFT_FORWARD, LOW);
+      digitalWrite(MOTOR_RIGHT_FORWARD, HIGH);
+      break;
+    case '5': // LEFT OFF
+      digitalWrite(MOTOR_LEFT_FORWARD, LOW);
+      digitalWrite(MOTOR_RIGHT_FORWARD, LOW);
+      break;
+    case '6': // RIGHT ON
+      digitalWrite(MOTOR_LEFT_FORWARD, HIGH);
+      digitalWrite(MOTOR_RIGHT_FORWARD, LOW);
+      break;
+    case '7': // RIGHT OFF
+      digitalWrite(MOTOR_LEFT_FORWARD, LOW);
+      digitalWrite(MOTOR_RIGHT_FORWARD, LOW);
+      break;
     }
   }
 }
