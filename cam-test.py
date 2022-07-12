@@ -1,5 +1,7 @@
 import cv2
 import time
+from otsu_binarization import compute_otsu_binarization, grayConversion
+import numpy as np
 
 capture = cv2.VideoCapture(1)
 
@@ -11,6 +13,7 @@ recording = False
 
 start_time = time.time()
 counter = 0
+threshold = 0
 
 frame_width = int(capture.get(3))
 frame_height = int(capture.get(4))
@@ -29,6 +32,15 @@ while successful:
     if recording:
         out.write(image)
 
+    img = grayConversion(image)
+    cv2.imshow("Gray Image", img)
+    # Compute otsu binarization for each frame
+    threshholded_im_mine = compute_otsu_binarization(img)
+
+    ret, threshholded_im = cv2.threshold(img, 120, 255, cv2.THRESH_BINARY +
+                                         cv2.THRESH_OTSU)
+    cv2.imshow("Otsu Binarization(CV)", threshholded_im)
+    cv2.imshow("Otsu Binarization(Mine)", threshholded_im_mine)
     cv2.imshow("preview", image)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         print('Quitting...')
