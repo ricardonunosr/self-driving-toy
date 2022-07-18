@@ -16,14 +16,10 @@ def compute_otsu_binarization(gray):
 
         value = Wb * Wf * (mub - muf) ** 2
 
-        print("Wb", Wb, "Wf", Wf)
-        print("t", t, "value", value)
-
         if value > final_value:
             final_thresh = t
             final_value = value
     final_img = gray.copy()
-    print(final_thresh)
     final_img[gray > final_thresh] = 255
     final_img[gray < final_thresh] = 0
     return final_img

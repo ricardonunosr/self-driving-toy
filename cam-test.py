@@ -1,7 +1,7 @@
 import cv2
 import time
 from otsu_binarization import compute_otsu_binarization, grayConversion
-import numpy as np
+from motion_control import move_forward, probe_check, stop_forward, move_backward, stop_backward, move_left, stop_left, move_right, stop_right, stop_car
 
 capture = cv2.VideoCapture(1)
 
@@ -35,17 +35,21 @@ while successful:
     img = grayConversion(image)
     cv2.imshow("Gray Image", img)
     # Compute otsu binarization for each frame
-    threshholded_im_mine = compute_otsu_binarization(img)
+    # threshholded_im_mine = compute_otsu_binarization(img)
 
+    # OpenCV Otsu
     ret, threshholded_im = cv2.threshold(img, 120, 255, cv2.THRESH_BINARY +
                                          cv2.THRESH_OTSU)
     cv2.imshow("Otsu Binarization(CV)", threshholded_im)
-    cv2.imshow("Otsu Binarization(Mine)", threshholded_im_mine)
+    # cv2.imshow("Otsu Binarization(Mine)", threshholded_im_mine)
     cv2.imshow("preview", image)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         print('Quitting...')
         break
+    probe_check(threshholded_im)
+    # move_forward()
 
+# stop_car()
 finish_time = time.time()
 fps = counter / (finish_time-start_time)
 print('Frames per second: ' + str(fps))

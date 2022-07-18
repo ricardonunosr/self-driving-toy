@@ -14,6 +14,11 @@ PC to Smartphone to Arduino (Changed car)
 
 ![setup](./imgs/setup.jpg)
 
+Otsu Binarization with simple detection of a black line
+![no-line-detected](./imgs/otsu-binarization-simple-detection-no-line.png)
+
+![line-detected](./imgs/otsu-binarization-simple-detection-line.png)
+
 # Circuitry
 
 - Arduino Uno
