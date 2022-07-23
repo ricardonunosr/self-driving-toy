@@ -4,6 +4,12 @@ from usb4a import usb
 from usbserial4a import serial4a
 from pprint import pprint
 import http.server
+from jnius import autoclass
+from android.runnable import run_on_ui_thread
+
+WindowManager = autoclass('android.view.WindowManager$LayoutParams')
+activity = autoclass('org.kivy.android.PythonActivity').mActivity
+
 
 usb_device_list = usb.get_usb_device_list()
 usb_device_name_list = [device.getDeviceName() for device in usb_device_list]
@@ -39,15 +45,22 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         self.send_response(200)
         self.end_headers()
         serial_port.write(body)
+        # print(serial_port.read())
 
 
 class HttpServerKivy(BoxLayout):
     def __init__(self, *args, **kwargs):
         super(HttpServerKivy, self).__init__(*args, **kwargs)
         self.start_server()
+        self.full_screen()
+
+    @run_on_ui_thread
+    def full_screen(self):
+        window = activity.getWindow()
+        window.addFlags(WindowManager.FLAG_FULLSCREEN)
 
     def start_server(self, HandlerClass=SimpleHTTPRequestHandler, ServerClass=http.server.HTTPServer):
-        server_address = ('192.168.1.65', 5000)
+        server_address = ('192.168.0.107', 5000)
         httpd = ServerClass(server_address, HandlerClass)
         httpd.serve_forever()
 
