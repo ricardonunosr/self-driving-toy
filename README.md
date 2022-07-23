@@ -22,6 +22,12 @@ _no line detected_
 _line detected_
 ![line-detected](./imgs/otsu-binarization-simple-detection-line.png)
 
+# Requisites
+
+- Android Phone
+- Pydroid 3 App
+- Iriun Webcam App
+
 # Circuitry
 
 - Arduino Uno
