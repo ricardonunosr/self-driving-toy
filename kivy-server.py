@@ -7,39 +7,41 @@ import http.server
 from jnius import autoclass
 from android.runnable import run_on_ui_thread
 
-WindowManager = autoclass('android.view.WindowManager$LayoutParams')
-activity = autoclass('org.kivy.android.PythonActivity').mActivity
+WindowManager = autoclass("android.view.WindowManager$LayoutParams")
+activity = autoclass("org.kivy.android.PythonActivity").mActivity
 
 
 usb_device_list = usb.get_usb_device_list()
 usb_device_name_list = [device.getDeviceName() for device in usb_device_list]
 usb_device_dict = {
-    device.getDeviceName(): [            # Device name
-        device.getVendorId(),           # Vendor ID
-        device.getManufacturerName(),   # Manufacturer name
-        device.getProductId(),          # Product ID
-        device.getProductName()         # Product name
-    ] for device in usb_device_list
+    device.getDeviceName(): [  # Device name
+        device.getVendorId(),  # Vendor ID
+        device.getManufacturerName(),  # Manufacturer name
+        device.getProductId(),  # Product ID
+        device.getProductName(),  # Product name
+    ]
+    for device in usb_device_list
 }
 pprint(usb_device_dict)
 
 if usb_device_list:
     serial_port = serial4a.get_serial_port(
         usb_device_list[0].getDeviceName(),
-        9600,   # Baudrate
-        8,      # Number of data bits(5, 6, 7 or 8)
-        'N',    # Parity('N', 'E', 'O', 'M' or 'S')
-        1)      # Number of stop bits(1, 1.5 or 2)
+        9600,  # Baudrate
+        8,  # Number of data bits(5, 6, 7 or 8)
+        "N",  # Parity('N', 'E', 'O', 'M' or 'S')
+        1,
+    )  # Number of stop bits(1, 1.5 or 2)
 
 
 class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
-        self.wfile.write(b'Hello, world!')
+        self.wfile.write(b"Hello, world!")
 
     def do_POST(self):
-        content_length = int(self.headers['Content-Length'])
+        content_length = int(self.headers["Content-Length"])
         body = self.rfile.read(content_length)
         print("Body: ", body)
         self.send_response(200)
@@ -59,8 +61,10 @@ class HttpServerKivy(BoxLayout):
         window = activity.getWindow()
         window.addFlags(WindowManager.FLAG_FULLSCREEN)
 
-    def start_server(self, HandlerClass=SimpleHTTPRequestHandler, ServerClass=http.server.HTTPServer):
-        server_address = ('192.168.0.107', 5000)
+    def start_server(
+        self, HandlerClass=SimpleHTTPRequestHandler, ServerClass=http.server.HTTPServer
+    ):
+        server_address = ("192.168.0.107", 5000)
         httpd = ServerClass(server_address, HandlerClass)
         httpd.serve_forever()
 
@@ -70,5 +74,5 @@ class App(App):
         return HttpServerKivy()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     App().run()

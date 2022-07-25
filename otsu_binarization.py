@@ -3,7 +3,7 @@ import numpy as np
 
 def compute_otsu_binarization(gray):
     pixel_number = gray.size
-    mean_weigth = 1.0/pixel_number
+    mean_weigth = 1.0 / pixel_number
     his, bins = np.histogram(gray, np.array(range(0, 256)))
     final_thresh = -1
     final_value = -1
@@ -26,7 +26,6 @@ def compute_otsu_binarization(gray):
 
 
 def grayConversion(image):
-    grayValue = 0.07 * image[:, :, 2] + 0.72 * \
-        image[:, :, 1] + 0.21 * image[:, :, 0]
+    grayValue = 0.07 * image[:, :, 2] + 0.72 * image[:, :, 1] + 0.21 * image[:, :, 0]
     gray_image = grayValue.astype(np.uint8)
     return gray_image
